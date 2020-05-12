@@ -6,6 +6,6 @@ from .models import SoundMap
 
 
 def show_map(request, map_id):
-    map = get_object_or_404(SoundMap, pk=map_id)
-    context = {'map': map}
-    return render(request, 'show_map.html', context)
+    sound_map = get_object_or_404(SoundMap, pk=map_id)
+    context = {'sound_map': sound_map}
+    return render(request, 'view_map.html', context)
