@@ -32,39 +32,37 @@
 </head>
 <body>
     <img src="{{ MEDIA_URL }}{{ sound_map.background_image }}" class="bg">
-	<c:forEach items="${mapMain.mapImageList}" var="addr">
-		<c:if test="${addr.isShow=='1'}">
-		<div style="position: absolute; left: ${addr.leftState}; top: ${addr.topState};">
-			<img src="${fn:replace(addr.imageFile, "|", "" )}" width="${addr.widthLen}" height="${addr.heightLen}" id="img_${addr.id}" border="0">
-		</div>
-		</c:if>
-	</c:forEach>
-	<c:forEach items="${mapMain.mapSoundsList}" var="addr">
-		<c:if test="${addr.isShow=='1'}">
-			<div style="position: absolute; left: ${addr.leftState}; top: ${addr.topState}; color: ${addr.fontColor}; font-size:${addr.fontSize};">
-				<audio id="sound_${addr.id}" src="${fn:replace(addr.soundFile, "|", "" )}"  loop="loop"></audio>
-				<a id="btn_${addr.id}"><img src="${fn:replace(addr.pauseImageFile, "|", "" )}" width="${addr.widthLen}" height="${addr.heightLen}" id="img_${addr.id}" border="0">${addr.name}</a>
+    {% for image in sound_map.images.all %}
+        {% if image.is_show == '1' %}
+            <div style="position: absolute; left: {{ image.loc_left }}; top: {{ image.loc_top }};">
+			    <img src="{{ image.icon_image }}" width="{{ image.size_width }}" height="{{ image.size_height }}" id="{{ image.pk }}" border="0">
+		    </div>
+        {% endif %}
+    {% endfor %}
+    {% for audio in sound_map.audios.all %}
+        {% if audio.is_show == '1' %}
+            <div style="position: absolute; left: {{ audio.loc_left }}; top: {{ audio.loc_top }}; color: {{ audio.name_color }}; font-size: {{ audio.name_size }};">
+				<audio id="sound_{{ audio.pk }}" src="{{ audio.sound_file }}"  loop="loop"></audio>
+				<a id="btn_{{ audio.pk }}"><img src="{{ audio.pause_image }}" width="{{ audio.size_width }}" height="{{ audio.size_height }}" id="img_{{ audio.pk }}" border="0">{{ audio.name }}</a>
 			</div>
 			<script>
-				$("#btn_${addr.id}").click(function(){
-					outplay = "this.currentTime=5";
-					var music = document.getElementById("sound_${addr.id}");
+				$("#btn_{{ audio.pk }}").click(function(){
+					let music = document.getElementById("sound_{{ audio.pk }}");
 					if(music.paused){
 						music.load();
 						music.play();
 						setTimeout(function(){
 							music.pause();
-							$("#img_${addr.id}").attr("src", "${fn:replace(addr.pauseImageFile, "|", "" )}");
-						},7000);
-						$("#img_${addr.id}").attr("src", "${fn:replace(addr.playImageFile, "|", "" )}");
+							$("#img_{{ audio.pk }}").attr("src", "{{ audio.pause_image }}");
+						}, {{ audio.sound_length }});
+						$("#img_{{ audio.pk }}").attr("src", "{{ audio.play_image }}");
 					}else{
 						music.pause();
-						$("#img_${addr.id}").attr("src", "${fn:replace(addr.pauseImageFile, "|", "" )}");
-
+						$("#img_{{ audio.pk }}").attr("src", "{{ audio.pause_image }}");
 					}
 				})
 			</script>
-		</c:if>
-	</c:forEach>
+        {% endif %}
+    {% endfor %}
 </body>
 </html>

@@ -53,7 +53,7 @@ class Image(models.Model):
     loc_top = models.CharField(max_length=20, verbose_name='位置-上')
     size_width = models.CharField(max_length=20, verbose_name='图标宽度', blank=True, null=True)
     size_height = models.CharField(max_length=20, verbose_name='图标高度', blank=True, null=True)
-    icon_image = models.ImageField(verbose_name='图标图片')
+    icon_image = models.ImageField(verbose_name='图片', width_field='size_width', height_field='size_height')
     content_image = models.URLField(verbose_name='点击后显示内容URL', blank=True, null=True)
     is_show = models.BooleanField(verbose_name='是否显示', default=True)
 
