@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>{{ sound_map.name }}</title>
+    <script src="{% static 'jquery/jquery-3.5.1.js' %}"></script>
+    <script src="{% static 'layer/layer.js' %}"></script>
     <style>
 		body{
 			overflow:scroll; overflow:hidden;
@@ -32,18 +35,18 @@
 </head>
 <body>
     <img src="{{ MEDIA_URL }}{{ sound_map.background_image }}" class="bg">
-    {% for image in sound_map.images.all %}
-        {% if image.is_show == '1' %}
+    {% for image in sound_map.image_set.all %}
+        {% if image.is_show %}
             <div style="position: absolute; left: {{ image.loc_left }}; top: {{ image.loc_top }};">
 			    <img src="{{ image.icon_image }}" width="{{ image.size_width }}" height="{{ image.size_height }}" id="{{ image.pk }}" border="0">
 		    </div>
         {% endif %}
     {% endfor %}
-    {% for audio in sound_map.audios.all %}
-        {% if audio.is_show == '1' %}
+    {% for audio in sound_map.audio_set.all %}
+        {% if audio.is_show %}
             <div style="position: absolute; left: {{ audio.loc_left }}; top: {{ audio.loc_top }}; color: {{ audio.name_color }}; font-size: {{ audio.name_size }};">
-				<audio id="sound_{{ audio.pk }}" src="{{ audio.sound_file }}"  loop="loop"></audio>
-				<a id="btn_{{ audio.pk }}"><img src="{{ audio.pause_image }}" width="{{ audio.size_width }}" height="{{ audio.size_height }}" id="img_{{ audio.pk }}" border="0">{{ audio.name }}</a>
+				<audio id="sound_{{ audio.pk }}" src="{{ audio.sound_file }}" loop="loop"></audio>
+				<a id="btn_{{ audio.pk }}"><img src="{{ MEDIA_URL }}{{ audio.pause_image }}" width="{{ audio.size_width }}" height="{{ audio.size_height }}" id="img_{{ audio.pk }}" border="0">{{ audio.name }}</a>
 			</div>
 			<script>
 				$("#btn_{{ audio.pk }}").click(function(){
@@ -64,5 +67,26 @@
 			</script>
         {% endif %}
     {% endfor %}
+    {% for video in videos %}
+        {% if video.is_show %}
+            <div style="position: absolute; left: {{ video.loc_left }}; top: {{ video.loc_top }}; color: {{ video.name_color }}; font-size: {{ video.name_size }};">
+				<a id="btn_{{ video.pk }}"><img src="{{ MEDIA_URL }}{{ video.pause_image }}" width="{{ video.size_width }}" height="{{ video.size_height }}" id="img_{{ video.pk }}" border="0">{{ video.name }}</a>
+			</div>
+			<script>
+				$("#btn_{{ video.pk }}").click(function(){
+				    layer.open({
+                      type: 2,
+                      title: false,
+                      area: ['630px', '360px'],
+                      shade: 0.8,
+                      closeBtn: 0,
+                      shadeClose: true,
+                      content: '{{ MEDIA_URL }}{{ video.video_file }}'
+                    });
+				})
+			</script>
+        {% endif %}
+    {% endfor %}
+
 </body>
 </html>

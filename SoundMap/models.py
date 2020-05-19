@@ -17,6 +17,10 @@ class SoundMap(models.Model):
     bak_2 = models.CharField(max_length=20, verbose_name='备注2', blank=True, null=True)
     bak_3 = models.CharField(max_length=20, verbose_name='备注3', blank=True, null=True)
 
+    class Meta:
+        verbose_name = '声音地图'
+        verbose_name_plural = verbose_name
+
     def __str__(self):
         return self.name
 
@@ -24,20 +28,24 @@ class SoundMap(models.Model):
 # 声音地图声音明细表
 class Audio(models.Model):
     map = models.ForeignKey(SoundMap, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20, verbose_name='素材名称')
-    is_show_name = models.BooleanField(verbose_name='是否显示名称', default=True)
-    name_size = models.CharField(max_length=20, verbose_name='名称字体大小', blank=True, null=True)
-    name_color = models.CharField(max_length=20, verbose_name='名称字体颜色', blank=True, null=True, default='#000')
+    name = models.CharField(max_length=20, verbose_name='名称')
+    is_show_name = models.BooleanField(verbose_name='显示名称', default=True)
+    name_size = models.CharField(max_length=20, verbose_name='名称大小', blank=True, null=True)
+    name_color = models.CharField(max_length=20, verbose_name='名称颜色', blank=True, null=True, default='#000')
     name_loc = models.IntegerField(verbose_name='名称位置', choices=LOCATION_CHOICES)
     loc_left = models.CharField(max_length=20, verbose_name='位置-左')
     loc_top = models.CharField(max_length=20, verbose_name='位置-上')
     size_width = models.CharField(max_length=20, verbose_name='图标宽度', blank=True, null=True)
     size_height = models.CharField(max_length=20, verbose_name='图标高度', blank=True, null=True)
-    pause_image = models.ImageField(verbose_name='静止时显示图片', width_field='size_width', height_field='size_height')
-    play_image = models.ImageField(verbose_name='播放时显示图片')
+    play_image = models.ImageField(verbose_name='播放显示图片')
+    pause_image = models.ImageField(verbose_name='静止显示图片', width_field='size_width', height_field='size_height')
     sound_file = models.FileField(verbose_name='声音文件')
     sound_length = models.IntegerField(verbose_name='播放时长', blank=True, null=True)
-    is_show = models.BooleanField(verbose_name='是否显示', default=True)
+    is_show = models.BooleanField(verbose_name='显示', default=True)
+
+    class Meta:
+        verbose_name = '声音元素'
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
@@ -46,18 +54,22 @@ class Audio(models.Model):
 # 声音地图图片明细表
 class Image(models.Model):
     map = models.ForeignKey(SoundMap, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20, verbose_name='素材名称')
-    is_show_name = models.BooleanField(verbose_name='是否显示名称', default=False)
-    name_size = models.CharField(max_length=20, verbose_name='名称字体大小', blank=True, null=True)
-    name_color = models.CharField(max_length=20, verbose_name='名称字体颜色', blank=True, null=True)
-    name_loc = models.IntegerField(verbose_name='名称位置')
+    name = models.CharField(max_length=20, verbose_name='名称')
+    is_show_name = models.BooleanField(verbose_name='显示名称', default=False)
+    name_size = models.CharField(max_length=20, verbose_name='名称大小', blank=True, null=True)
+    name_color = models.CharField(max_length=20, verbose_name='名称颜色', blank=True, null=True)
+    name_loc = models.IntegerField(verbose_name='名称位置', choices=LOCATION_CHOICES)
     loc_left = models.CharField(max_length=20, verbose_name='位置-左')
     loc_top = models.CharField(max_length=20, verbose_name='位置-上')
-    size_width = models.CharField(max_length=20, verbose_name='图标宽度', blank=True, null=True)
-    size_height = models.CharField(max_length=20, verbose_name='图标高度', blank=True, null=True)
+    size_width = models.CharField(max_length=20, verbose_name='图标宽', blank=True, null=True)
+    size_height = models.CharField(max_length=20, verbose_name='图标高', blank=True, null=True)
     icon_image = models.ImageField(verbose_name='图片', width_field='size_width', height_field='size_height')
-    content_image = models.URLField(verbose_name='点击后显示内容URL', blank=True, null=True)
-    is_show = models.BooleanField(verbose_name='是否显示', default=True)
+    content = models.URLField(verbose_name='内容URL', blank=True, null=True)
+    is_show = models.BooleanField(verbose_name='显示', default=True)
+
+    class Meta:
+        verbose_name = '图片元素'
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
@@ -66,20 +78,23 @@ class Image(models.Model):
 # 声音地图视频明细表
 class Video(models.Model):
     map = models.ForeignKey(SoundMap, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20, verbose_name='素材名称')
-    is_show_name = models.BooleanField(verbose_name='是否显示名称', default=True)
-    name_size = models.CharField(max_length=20, verbose_name='名称字体大小', blank=True, null=True)
-    name_color = models.CharField(max_length=20, verbose_name='名称字体颜色', blank=True, null=True, default='#000')
+    name = models.CharField(max_length=20, verbose_name='名称')
+    is_show_name = models.BooleanField(verbose_name='显示名称', default=True)
+    name_size = models.CharField(max_length=20, verbose_name='名称大小', blank=True, null=True)
+    name_color = models.CharField(max_length=20, verbose_name='名称颜色', blank=True, null=True, default='#000')
     name_loc = models.IntegerField(verbose_name='名称位置', choices=LOCATION_CHOICES)
     loc_left = models.CharField(max_length=20, verbose_name='位置-左')
     loc_top = models.CharField(max_length=20, verbose_name='位置-上')
-    size_width = models.CharField(max_length=20, verbose_name='图标宽度', blank=True, null=True)
-    size_height = models.CharField(max_length=20, verbose_name='图标高度', blank=True, null=True)
-    pause_image = models.ImageField(verbose_name='静止时显示图片', width_field='size_width', height_field='size_height')
-    play_image = models.ImageField(verbose_name='播放时显示图片')
+    size_width = models.CharField(max_length=20, verbose_name='图标宽', blank=True, null=True)
+    size_height = models.CharField(max_length=20, verbose_name='图标高', blank=True, null=True)
+    pause_image = models.ImageField(verbose_name='静止显示图片', width_field='size_width', height_field='size_height')
     video_file = models.FileField(verbose_name='视频文件')
     video_length = models.IntegerField(verbose_name='播放时长', blank=True, null=True)
-    is_show = models.BooleanField(verbose_name='是否显示', default=True)
+    is_show = models.BooleanField(verbose_name='显示', default=True)
+
+    class Meta:
+        verbose_name = '视频元素'
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.name
