@@ -24,6 +24,6 @@ from .views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
-    path('SoundMap/', include('SoundMap.urls')),
     re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    path('SoundMap/', include('SoundMap.urls')),
 ]
