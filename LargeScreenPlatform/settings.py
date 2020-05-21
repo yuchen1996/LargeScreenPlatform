@@ -135,5 +135,3 @@ STATICFILES_FINDERS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-SIMPLEUI_LOGO = 'https://static.djangoproject.com/img/logo-django.42234b631760.svg'
